@@ -2,26 +2,24 @@ const express = require('express');
 const Vigenere = require('caesar-salad').Vigenere;
 const cors = require('cors');
 
-const password = "JdnfkKLdl";
-
-app.use(cors());
-
 const app = express();
 const port = 8009;
-const cipher = (message) => {
+app.use(cors());
+app.use(express.json());
+const cipher = (message, password) => {
     return Vigenere.Cipher(password).crypt(message);
 };
 
-const decipher = (message) => {
+const decipher = (message, password) => {
    return  Vigenere.Decipher(password).crypt(message);
 };
 
-app.get('/encode/:message', (req, res) => {
-    res.set({'Content-type': 'text/plain'}).send(cipher(req.params.message));
+app.post('/encode/', (req, res) => {
+    res.set({'Content-type': 'application/json'}).send({encoded: cipher(req.body.message, req.body.password)});
 });
 
-app.get('/decode/:message', (req, res) => {
-    res.set({'Content-type': 'text/plain'}).send(decipher(req.params.message));
+app.post('/decode/', (req, res) => {
+    res.set({'Content-type': 'application/json'}).send({decoded: decipher(req.body.message, req.body.password)});
 });
 
 

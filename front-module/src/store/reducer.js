@@ -7,11 +7,9 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    console.log(a)
     switch (action.type) {
         case FETCH_ENCODE:
             return {...state, encodeMessage: action.payload};
-            console.log(state)
         case FETCH_DECODE:
             return {...state, decodeMessage: action.payload};
         case PASSWORD_CHANGE:

@@ -1,25 +1,41 @@
 import './App.css'
-import {fetchDecode, fetchEncode, passwordChange} from "./store/action";
-import {useDispatch} from "react-redux";
+import {Decode, Encode, fetchDecode, fetchEncode, passwordChange} from "./store/action";
+import {useDispatch, useSelector} from "react-redux";
+import {useState} from "react";
 
 const App = () => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const encodeMessage = useSelector(state => state.encodeMessage);
+    const decodeMessage = useSelector(state => state.decodeMessage);
+    const password = useSelector(state => state.password);
+
+    const [buttonDis, setButtonDis] = useState(true)
+
+    const setButton = (e) => {
+      dispatch(passwordChange(e.target.value));
+      console.log(e.target.value)
+      if (e.target.value.length === 0) {
+        setButtonDis(true)
+        return
+      }
+      setButtonDis(false);
+    }
 
     return (
         <form className="form">
             <div>
                 <label>Decoded Message</label>
-                <textarea cols="60" rows="10" onChange={(e) => dispatch(fetchDecode(e.target.value))}></textarea>
+                <textarea cols="60" rows="10" value={decodeMessage} onChange={(e) => dispatch(fetchDecode(e.target.value))}></textarea>
             </div>
             <div>
                 <label className="label-password"> Code Password</label>
-                <input className="password-input" type="text" onChange={(e) => dispatch(passwordChange(e.target.value))}/>
-                <button type="button">Decode</button>
-                <button type="button">Encode</button>
+                <input className="password-input" type="text" value={password} onChange={(e) => setButton(e)}/>
+                <button disabled={buttonDis} onClick={() => dispatch(Decode(decodeMessage, password))} type="button">Decode</button>
+                <button disabled={buttonDis} onClick={() => dispatch(Encode(encodeMessage, password))} type="button">Encode</button>
             </div>
             <div>
                 <label>Encoded Message</label>
-                <textarea cols="60" rows="10" onChange={(e) => dispatch(fetchEncode(e.target.value))}></textarea>
+                <textarea cols="60" rows="10" value={encodeMessage} onChange={(e) => dispatch(fetchEncode(e.target.value))}></textarea>
             </div>
         </form>
     )
