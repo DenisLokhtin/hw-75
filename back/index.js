@@ -11,7 +11,7 @@ const cipher = (message, password) => {
 };
 
 const decipher = (message, password) => {
-   return  Vigenere.Decipher(password).crypt(message);
+    return Vigenere.Decipher(password).crypt(message);
 };
 
 app.post('/encode/', (req, res) => {
