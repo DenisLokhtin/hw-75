@@ -1,6 +1,10 @@
 const express = require('express');
 const Vigenere = require('caesar-salad').Vigenere;
+const cors = require('cors');
+
 const password = "JdnfkKLdl";
+
+app.use(cors());
 
 const app = express();
 const port = 8009;
